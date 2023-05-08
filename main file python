@@ -1,0 +1,27 @@
+from tkinter import *
+
+class system:
+    def __init__(self, parent, bookA, bookNA):
+        menu = ["Books Available", "Books on Borrow"]
+        self.menu_val = StringVar()
+        self.menu_val.set(menu[0])
+
+        option_menu = OptionMenu(parent, self.menu_val, *menu)
+        option_menu.pack()
+
+        self.available = bookA
+        self.unavailable = bookNA
+    
+
+class LibraryGUI:
+    def __init__(self, parent):
+        self.books = []
+        
+
+
+
+
+if __name__ == "__main__":
+    root = Tk()
+    book = system(root)
+    root.mainloop()
