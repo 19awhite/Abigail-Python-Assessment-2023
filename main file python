@@ -1,21 +1,53 @@
 from tkinter import *
 
+
 class system:
     def __init__(self, parent, bookA, bookNA):
-        menu = ["Books Available", "Books on Borrow"]
+        self.menu = ["Books Available", "Books on Borrow"]
         self.menu_val = StringVar()
-        self.menu_val.set(menu[0])
+        self.menu_val.set(self.menu[0])
 
-        option_menu = OptionMenu(parent, self.menu_val, *menu)
-        option_menu.pack()
+        self.bookA_frame = Frame(parent)
+        self.bookA_frame.grid(row=0, column=0)
+
+        self.bookNA_frame = Frame(parent)
+        self.bookNA_frame.grid(row=1,column=0)
+
+        option_menu = OptionMenu(parent, self.menu_val, *self.menu)
+        option_menu.grid(row=0, column=0)
 
         self.available = bookA
         self.unavailable = bookNA
+
+        self.update_frame_visibility() #update initial frame visibility
+
+        #widgets in frame bookA
+        borrow_button = Button(self.bookA_frame, text="Borrow Me")
+        borrow_button.grid(row=0, column=0)
+
+        #widgets in frame bookNA
+        
+
+    def update_frame_visibility(self):
+        selected_option = self.menu_val.get()
+
+        if selected_option == self.menu[0]:
+            self.bookA_frame.grid(row=0, column=0) #books available selected
+            self.bookNA_frame.grid_remove()
+        elif selected_option == self.menu[1]:
+            self.bookA_frame.grid_remove()
+            self.bookNa_frame.grid(row=1, column=0) #books n/a selected
     
 
 class LibraryGUI:
-    def __init__(self, parent):
-        self.books = []
+    def __init__(self, parent, bookA, bookNA):
+        pass
+
+        #self.bookA = []
+        #self.bookNA = []
+
+
+
         
 
 
@@ -23,5 +55,5 @@ class LibraryGUI:
 
 if __name__ == "__main__":
     root = Tk()
-    book = system(root)
+    book = system(root, [], [])
     root.mainloop()
