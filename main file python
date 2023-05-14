@@ -14,21 +14,14 @@ class system:
         self.bookNA_frame.grid(row=1,column=0)
 
         option_menu = OptionMenu(parent, self.menu_val, *self.menu)
-        option_menu.grid(row=0, column=0)
+        option_menu.grid(row=0, column=1)
 
         self.available = bookA
         self.unavailable = bookNA
 
-        self.update_frame_visibility() #update initial frame visibility
+        self.update_frame_visibility(parent) #update initial frame visibility
 
-        #widgets in frame bookA
-        borrow_button = Button(self.bookA_frame, text="Borrow Me")
-        borrow_button.grid(row=0, column=0)
-
-        #widgets in frame bookNA
-        
-
-    def update_frame_visibility(self):
+    def update_frame_visibility(self, parent):
         selected_option = self.menu_val.get()
 
         if selected_option == self.menu[0]:
@@ -36,8 +29,18 @@ class system:
             self.bookNA_frame.grid_remove()
         elif selected_option == self.menu[1]:
             self.bookA_frame.grid_remove()
-            self.bookNa_frame.grid(row=1, column=0) #books n/a selected
-    
+            self.bookNA_frame.grid(row=0, column=0) #books n/a selected
+
+        parent.update()
+
+        if selected_option == self.menu[0]:
+             #widgets in frame bookA
+            borrow_button = Button(self.bookA_frame, text="Borrow Me")
+            borrow_button.grid(row=0, column=0)
+        elif selected_option == self.menu[1]:
+            #widgets in frame bookNA
+            borrow_button = Button(self.bookNA_frame, text="Button")
+            borrow_button.grid(row=0, column=0)
 
 class LibraryGUI:
     def __init__(self, parent, bookA, bookNA):
