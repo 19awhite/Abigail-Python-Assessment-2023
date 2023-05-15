@@ -29,7 +29,7 @@ class system:
             self.bookNA_frame.grid_remove()
         elif selected_option == self.menu[1]:
             self.bookA_frame.grid_remove()
-            self.bookNA_frame.grid(row=0, column=0) #books n/a selected
+            self.bookNA_frame.grid(row=1, column=0) #books n/a selected
 
         parent.update()
 
