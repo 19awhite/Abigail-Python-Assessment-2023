@@ -7,52 +7,57 @@ class system:
         self.menu_val = StringVar()
         self.menu_val.set(self.menu[0])
 
+        option_menu = OptionMenu(parent, self.menu_val, *self.menu)
+        option_menu.grid(row=0, column=0)
+
         self.bookA_frame = Frame(parent)
-        self.bookA_frame.grid(row=0, column=0)
+        self.bookA_frame.grid(row=1, column=0)
 
         self.bookNA_frame = Frame(parent)
-        self.bookNA_frame.grid(row=1,column=0)
-
-        option_menu = OptionMenu(parent, self.menu_val, *self.menu)
-        option_menu.grid(row=0, column=1)
-
-        self.available = bookA
-        self.unavailable = bookNA
+        self.bookNA_frame.grid(row=2, column=0)
 
         self.update_frame_visibility(parent) #update initial frame visibility
 
-    def update_frame_visibility(self, parent):
+        self.create_widgets()
+
+        self.menu_val.trace("w", lambda *args: self.update_frame_visibility(parent))
+
+    def create_widgets(self):
         selected_option = self.menu_val.get()
 
-        if selected_option == self.menu[0]:
-            self.bookA_frame.grid(row=0, column=0) #books available selected
-            self.bookNA_frame.grid_remove()
-        elif selected_option == self.menu[1]:
-            self.bookA_frame.grid_remove()
-            self.bookNA_frame.grid(row=1, column=0) #books n/a selected
-
-        parent.update()
-
-        if selected_option == self.menu[0]:
-             #widgets in frame bookA
+        if self.menu_val.get() == self.menu[0]:
+            # widgets in frame bookA
             borrow_button = Button(self.bookA_frame, text="Borrow Me")
             borrow_button.grid(row=0, column=0)
-        elif selected_option == self.menu[1]:
-            #widgets in frame bookNA
+        elif self.menu_val.get() == self.menu[1]:
+            # widgets in frame bookNA
             borrow_button = Button(self.bookNA_frame, text="Button")
             borrow_button.grid(row=0, column=0)
 
-class LibraryGUI:
-    def __init__(self, parent, bookA, bookNA):
-        pass
+    def update_frame_visibility(self, parent, *args):
+        selected_option = self.menu_val.get()
 
-        #self.bookA = []
-        #self.bookNA = []
+        if selected_option == self.menu[0]:
+            for widget in self.bookA_frame.winfo_children():
+                widget.destroy()
+            self.bookA_frame.grid(row=2, column=0) #books available selected
+            self.bookNA_frame.grid_remove()
+        elif selected_option == self.menu[1]:
+            for widget in self.bookA_frame.winfo_children():
+                widget.destroy()
+            self.bookA_frame.grid_remove()
+            self.bookNA_frame.grid(row=2, column=0) #books n/a selected
 
-
+        self.create_widgets()
 
         
 
+class LibraryGUI:
+    def __init__(self, parent, bookA, bookNA):
+        self.bookA = []
+
+        #self.bookA = []
+        #self.bookNA = []
 
 
 
