@@ -1,7 +1,12 @@
 from tkinter import *
+from tkinter import messagebox
 
+class LibraryGUI:
+    def __init__(self, parent, bookA, bookNA):
+        self.bookA = ["Dune", "1984","Pride and Prejudice", "The Handmaid's Tale","Where the Crawdads Sing", "Noughts & Crosses", "The Picture of Dorian Gray"]
+        self.author = ["Frank Herbet", "George Orwell","Jane Austen", "Margaret Atwood", "Delia Owens", "Malorie Blackman", "Oscar Wilde"]
 
-class system:
+class System:
     def __init__(self, parent, bookA, bookNA):
         self.menu = ["Books Available", "Books on Borrow"]
         self.menu_val = StringVar()
@@ -16,6 +21,9 @@ class system:
         self.bookNA_frame = Frame(parent)
         self.bookNA_frame.grid(row=2, column=0)
 
+        self.reserve_frame = Frame(parent)
+        self.reserve_frame.grid(row=3, column=0)
+
         self.update_frame_visibility(parent) #update initial frame visibility
 
         self.create_widgets()
@@ -26,13 +34,26 @@ class system:
         selected_option = self.menu_val.get()
 
         if self.menu_val.get() == self.menu[0]:
-            # widgets in frame bookA
-            borrow_button = Button(self.bookA_frame, text="Borrow Me")
-            borrow_button.grid(row=0, column=0)
+          for widget in self.bookA_frame.winfo_children():
+            widget.destroy()
+          # widgets in frame bookA
+            
+          # Create book labels for each book and author in bookA and author lists
+          for i in range(len(LibraryGUI(self, [], []).bookA)):
+                book_label = Label(
+                    self.bookA_frame,
+                    text=f" {LibraryGUI(self, [], []).bookA[i]}, Author: {LibraryGUI(self, [], []).author[i]}",)
+                book_label.grid(row=i + 1, column=0)
+            
+          borrow_button = Button(self.bookA_frame, text="Reserve a book", command=self.reservation_form)
+          borrow_button.grid(row=10, column=0)
+            
         elif self.menu_val.get() == self.menu[1]:
             # widgets in frame bookNA
             borrow_button = Button(self.bookNA_frame, text="Button")
             borrow_button.grid(row=0, column=0)
+
+        
 
     def update_frame_visibility(self, parent, *args):
         selected_option = self.menu_val.get()
@@ -50,18 +71,44 @@ class system:
 
         self.create_widgets()
 
-        
+    def reservation_form(self):
+      for widget in self.bookA_frame.winfo_children():
+            widget.destroy()
+      #list of books for user to choose
+      for i in range(len(LibraryGUI(self, [], []).bookA)):
+                book_label = Label(
+                    self.bookA_frame,
+                    text=f" {LibraryGUI(self, [], []).bookA[i]}, Author: {LibraryGUI(self, [], []).author[i]}",)
+                book_label.grid(row=i + 1, column=0)
 
-class LibraryGUI:
-    def __init__(self, parent, bookA, bookNA):
-        self.bookA = []
+      #create input fields and submit button for reservation form
+      self.book_label = Label(self.reserve_frame, text="Book:")
+      self.book_label.grid(row=0, column=0)
+      self.book_entry = Entry(self.reserve_frame)
+      self.book_entry.grid(row=0, column=1)
 
-        #self.bookA = []
-        #self.bookNA = []
+      self.name_label = Label(self.reserve_frame, text="Name:")
+      self.name_label.grid(row=2, column=0)
+      self.name_entry = Entry(self.reserve_frame)
+      self.name_entry.grid(row=2,column=1)
 
+      self.ebtn = Button(self.reserve_frame, text="Enter", command=self.reserve_data)
+      self.ebtn.grid(row=10, column=3)
 
+    def reserve_data(self):
+      
+      #retrieve values entered by user from entry widgets
+      book = self.book_entry.get()
+      name = self.name_entry.get()
+      
+      #display confirmation of reservation to user 
+      messagebox.showinfo("Reservation", "Book has been reserved successfully, please collect from the library")
+      
+      #clear entry widgets
+      self.book_entry.delete(0, END)
+      self.name_entry.delete(0, END)
 
 if __name__ == "__main__":
     root = Tk()
-    book = system(root, [], [])
+    book = System(root, [], [])
     root.mainloop()
